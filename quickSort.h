@@ -2,7 +2,6 @@
 #define QUICKSORT_H
 
 #include "iSorter.h"
-#include "swap.h"
 
 template<typename T>
 class QuickSorter final : public ISorter<T> {

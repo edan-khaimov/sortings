@@ -2,7 +2,6 @@
 #define HEAPSORT_H
 
 #include "iSorter.h"
-#include "swap.h"
 
 template<typename T>
 class HeapSorter final : public ISorter<T> {

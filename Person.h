@@ -7,20 +7,20 @@ class Person {
     std::string surname;
     std::string patronymic;
     std::string gender;
-    int age;
-    double weight;
-    double height;
+    int age{};
+    int weight{};
+    int height{};
     std::string education;
     std::string marriageStatus;
-    int passportSeries;
-    int passportNumber;
-    int salary;
+    int passportSeries{};
+    int passportNumber{};
+    int salary{};
 
 public:
     Person() = default;
 
     Person(const std::string& name, const std::string& surname, const std::string& patronymic,
-           const std::string& gender, const int& age, const double& weight, const double& height,
+           const std::string& gender, const int& age, const int& weight, const int& height,
            const std::string& education, const std::string& marriageStatus, const int& passportSeries,
            const int& passportNumber, const int& salary) :
         name(name), surname(surname), patronymic(patronymic), gender(gender), age(age), weight(weight), height(height),
@@ -37,8 +37,8 @@ public:
     int getPassportSeries() const { return passportSeries; }
     int getPassportNumber() const { return passportNumber; }
     int getSalary() const { return salary; }
-    double getWeight() const { return weight; }
-    double getHeight() const { return height; }
+    int getWeight() const { return weight; }
+    int getHeight() const { return height; }
 
     void setName(const std::string& name) { this->name = name; }
     void setSurname(const std::string& surname) { this->surname = surname; }
@@ -50,8 +50,8 @@ public:
     void setPassportSeries(const int& passportSeries) { this->passportSeries = passportSeries; }
     void setPassportNumber(const int& passportNumber) { this->passportNumber = passportNumber; }
     void setSalary(const int& salary) { this->salary = salary; }
-    void setWeight(const double& weight) { this->weight = weight; }
-    void setHeight(const double& height) { this->height = height; }
+    void setWeight(const int& weight) { this->weight = weight; }
+    void setHeight(const int& height) { this->height = height; }
 
     ~Person() = default;
 };

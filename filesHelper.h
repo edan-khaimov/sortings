@@ -42,6 +42,8 @@ void numericTxtSort(const std::string& inputFilePath, const std::string& outputF
 inline void personCSVSort(const std::string& inputFilePath, const std::string& outputFilePath,
                           const ISorter<Person>& sorter, int (*cmp)(const Person&, const Person&)) {
     ArraySequence<Person> a;
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
     Person person;
     std::ifstream inputFile(inputFilePath);
     if (!inputFile.is_open()) {
@@ -91,8 +93,7 @@ inline void personCSVSort(const std::string& inputFilePath, const std::string& o
         throw std::runtime_error("Cannot open file for writing");
     }
 
-    outputFile << "Фамилия,Имя,Отчество,Пол,Возраст,Вес,Рост,Образование,Семейное положение,Серия паспорта,Номер "
-                  "паспорта,Зарплата"
+    outputFile << "Familija,Imja,Otchestvo,Pol,Vozrast,Ves,Rost,Obrazovanie,Semejnoe polozhenie,Serija pasporta,Nomer pasporta,Zarplata"
                << '\n';
     for (size_t i = 0; i < a.GetLength(); i++) {
         outputFile << a[i].getSurname() << "," << a[i].getName() << "," << a[i].getPatronymic() << ","

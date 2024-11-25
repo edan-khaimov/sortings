@@ -1,7 +1,6 @@
 #ifndef ISORTER_H
 #define ISORTER_H
 #include "../sequences/sequence.h"
-#include "DefaultComparators.h"
 
 template<class T>
 class ISorter {
