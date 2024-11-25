@@ -1,5 +1,4 @@
 #include "PersonComparators.h"
-#include "DefaultComparators.h"
 
 int ascendingComparatorByAge(const Person& a, const Person& b) {
     if (a.getAge() < b.getAge()) {
