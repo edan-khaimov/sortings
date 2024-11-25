@@ -2,33 +2,81 @@
 #include "DefaultComparators.h"
 
 int ascendingComparatorByAge(const Person& a, const Person& b) {
-    return ascendingComparator(a.getAge(), b.getAge());
+    if (a.getAge() < b.getAge()) {
+        return 1;
+    }
+    if (a.getAge() > b.getAge()) {
+        return -1;
+    }
+    return 0;
 }
 
 int descendingComparatorByAge(const Person& a, const Person& b) {
-    return descendingComparator(a.getAge(), b.getAge());
+    if (a.getAge() < b.getAge()) {
+        return -1;
+    }
+    if (a.getAge() > b.getAge()) {
+        return 1;
+    }
+    return 0;
 }
 
 int ascendingComparatorBySalary(const Person& a, const Person& b) {
-    return ascendingComparator(a.getSalary(), b.getSalary());
+    if (a.getSalary() < b.getSalary()) {
+        return 1;
+    }
+    if (a.getSalary() > b.getSalary()) {
+        return -1;
+    }
+    return 0;
 }
 
 int descendingComparatorBySalary(const Person& a, const Person& b) {
-    return descendingComparator(a.getSalary(), b.getSalary());
+    if (a.getSalary() < b.getSalary()) {
+        return -1;
+    }
+    if (a.getSalary() > b.getSalary()) {
+        return 1;
+    }
+    return 0;
 }
 
 int ascendingComparatorByHeight(const Person& a, const Person& b) {
-    return ascendingComparator(a.getHeight(), b.getHeight());
+    if (a.getHeight() < b.getHeight()) {
+        return 1;
+    }
+    if (a.getHeight() > b.getHeight()) {
+        return -1;
+    }
+    return 0;
 }
 
 int descendingComparatorByHeight(const Person& a, const Person& b) {
-    return descendingComparator(a.getHeight(), b.getHeight());
+    if (a.getHeight() < b.getHeight()) {
+        return -1;
+    }
+    if (a.getHeight() > b.getHeight()) {
+        return 1;
+    }
+    return 0;
 }
 
 int ascendingComparatorByWeight(const Person& a, const Person& b) {
-    return ascendingComparator(a.getWeight(), b.getWeight());
+    if (a.getWeight() < b.getWeight()) {
+        return 1;
+    }
+    if (a.getWeight() > b.getWeight()) {
+        return -1;
+    }
+    return 0;
 }
 
 int descendingComparatorByWeight(const Person& a, const Person& b) {
-    return descendingComparator(a.getWeight(), b.getWeight());
+    if (a.getWeight() < b.getWeight()) {
+        return -1;
+    }
+    if (a.getWeight() > b.getWeight()) {
+        return 1;
+    }
+    return 0;
 }
