@@ -5,7 +5,7 @@
 
 template<typename T>
 class HeapSorter final : public ISorter<T> {
-    void heapify(Sequence<T>& sequence, const int& n, const int& i, int (*cmp)(const T&, const T&)) const {
+    void heapify(Sequence<T>& sequence, const int n, int i, int (*cmp)(const T&, const T&)) const {
         int largest = i;
         int l = 2 * i + 1;
         int r = 2 * i + 2;
