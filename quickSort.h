@@ -15,7 +15,7 @@ class QuickSorter final : public ISorter<T> {
             int j = i - 1;
             while (j >= left && cmp(sequence[j], key) > 0) {
                 sequence[j + 1] = sequence[j];
-                j--;
+                --j;
             }
             sequence[j + 1] = key;
         }
