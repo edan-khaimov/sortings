@@ -2,36 +2,70 @@
 #define QUICKSORT_H
 
 #include "iSorter.h"
+#include <random>
+#include <stack>
+
+constexpr int insertionSortThreshold = 16;
 
 template<typename T>
 class QuickSorter final : public ISorter<T> {
-    int partition(Sequence<T>& sequence, const int left, const int right, int (*cmp)(const T&, const T&)) const {
-        T pivot = sequence[right];
-        int i = left - 1;
+    void insertionSort(Sequence<T>& sequence, const int left, const int right, int (*cmp)(const T&, const T&)) const {
+        for (int i = left + 1; i <= right; i++) {
+            T key = sequence[i];
+            int j = i - 1;
+            while (j >= left && cmp(sequence[j], key) > 0) {
+                sequence[j + 1] = sequence[j];
+                j--;
+            }
+            sequence[j + 1] = key;
+        }
+    }
 
-        for (int j = left; j < right; j++) {
-            if (cmp(sequence[j], pivot) < 0) {
-                i++;
-                swap(sequence[i], sequence[j]);
+    std::pair<int, int> partition(Sequence<T>& sequence, const int left, const int right, int (*cmp)(const T&, const T&)) const {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution dis(left, right);
+        int pivotIndex = dis(gen);
+        T pivot = sequence[pivotIndex];
+        std::swap(sequence[pivotIndex], sequence[right]);
+
+        int lt = left;
+        int gt = right;
+        int i = left;
+
+        while (i <= gt) {
+            if (cmp(sequence[i], pivot) < 0) {
+                std::swap(sequence[i], sequence[lt]);
+                ++lt;
+                ++i;
+            } else if (cmp(sequence[i], pivot) > 0) {
+                std::swap(sequence[i], sequence[gt]);
+                --gt;
+            } else {
+                ++i;
             }
         }
-
-        swap(sequence[i + 1], sequence[right]);
-
-        return i + 1;
+        return {lt, gt};
     }
-
-    void quickSort(Sequence<T>& sequence, const int left, const int right, int (*cmp)(const T&, const T&)) const {
-        if (left < right) {
-            const size_t pivot = partition(sequence, left, right, cmp);
-            quickSort(sequence, left, pivot - 1, cmp);
-            quickSort(sequence, pivot + 1, right, cmp);
-        }
-    }
-
 public:
     Sequence<T>* Sort(Sequence<T>& sequence, int (*cmp)(const T&, const T&)) const override {
-        quickSort(sequence, 0, sequence.GetLength() - 1, cmp);
+        std::stack<std::pair<int, int>> stack;
+        stack.push({0, sequence.GetLength() - 1});
+        while (!stack.empty()) {
+            auto [left, right] = stack.top();
+            stack.pop();
+            if (right - left + 1 < insertionSortThreshold) {
+                insertionSort(sequence, left, right, cmp);
+                continue;
+            }
+            auto [lt, gt] = partition(sequence, left, right, cmp);
+            if (lt - 1 > left) {
+                stack.push({left, lt - 1});
+            }
+            if (gt + 1 < right) {
+                stack.push({gt + 1, right});
+            }
+        }
         return &sequence;
     }
 };
