@@ -2,11 +2,13 @@
 #include <QElapsedTimer>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <fstream>
+#include <iostream>
 #include <qcoreapplication.h>
 
 #include "../PersonComparators.h"
-#include "../filesHelper.h"
 #include "../heapSort.h"
+#include "../../sequences/arraySequence.h"
 #include "../quickSort.h"
 
 SortWindow::SortWindow(QWidget* parent) : QMainWindow(parent) {
