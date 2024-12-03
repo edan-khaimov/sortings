@@ -14,6 +14,8 @@ add_executable(sorting main.cpp
         UI/mainWindow.cpp
         UI/sortWindow.cpp
         UI/testWindow.cpp
+        tests/filesHelper.cpp
+        tests/filesHelper.h
 )
 
 target_link_libraries(sorting PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets)
