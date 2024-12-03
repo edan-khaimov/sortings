@@ -17,7 +17,7 @@ class QuickSorter final : public ISorter<T> {
                 sequence[j + 1] = sequence[j];
                 --j;
             }
-            sequence[j + 1] = key;
+            sequence[j + 1] = std::move(key);
         }
     }
 
