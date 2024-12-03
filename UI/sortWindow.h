@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QMainWindow>
+#include <QProgressBar>
 
 class SortWindow : public QMainWindow {
     Q_OBJECT
@@ -19,8 +20,11 @@ private slots:
 private:
     QComboBox* sortTypeComboBox;
     QComboBox* sortParameterComboBox;
+    QComboBox* sortOrderComboBox;
     QLineEdit* filePathLineEdit;
     QLabel* resultLabel;
+    QLabel* statusLabel;
+    QProgressBar* progressBar;
 };
 
 #endif // SORTWINDOW_H

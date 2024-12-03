@@ -90,12 +90,10 @@ void applyStyleSheet(QApplication &app) {
             width: 150px;
         }
 
-        /* Стиль для комбинированных элементов (кнопка и поле для текста) */
         QHBoxLayout > QWidget {
             margin-right: 10px;
         }
 
-        /* Стиль для кнопки "Выбрать файл" */
         QPushButton#selectFileButton {
             background-color: #81A1C1;
             border-radius: 5px;
