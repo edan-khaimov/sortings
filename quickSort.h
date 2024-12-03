@@ -2,8 +2,8 @@
 #define QUICKSORT_H
 
 #include "iSorter.h"
+#include "../sequences/stack.h"
 #include <random>
-#include <stack>
 
 constexpr int insertionSortThreshold = 16;
 
@@ -49,21 +49,21 @@ class QuickSorter final : public ISorter<T> {
     }
 public:
     Sequence<T>* Sort(Sequence<T>& sequence, int (*cmp)(const T&, const T&)) const override {
-        std::stack<std::pair<int, int>> stack;
-        stack.push({0, sequence.GetLength() - 1});
-        while (!stack.empty()) {
-            auto [left, right] = stack.top();
-            stack.pop();
+        Stack<std::pair<int, int>> stack;
+        stack.Push({0, sequence.GetLength() - 1});
+        while (!stack.Empty()) {
+            auto [left, right] = stack.Top();
+            stack.Pop();
             if (right - left + 1 < insertionSortThreshold) {
                 insertionSort(sequence, left, right, cmp);
                 continue;
             }
             auto [lt, gt] = partition(sequence, left, right, cmp);
             if (lt - 1 > left) {
-                stack.push({left, lt - 1});
+                stack.Push({left, lt - 1});
             }
             if (gt + 1 < right) {
-                stack.push({gt + 1, right});
+                stack.Push({gt + 1, right});
             }
         }
         return &sequence;
