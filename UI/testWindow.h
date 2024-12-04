@@ -30,6 +30,8 @@ private:
     QLabel *resultLabel;
 
     QPushButton *checkSortingButton;
+
+    QProgressBar* progressBar;
 };
 
 #endif // TESTWINDOW_H

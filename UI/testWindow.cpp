@@ -24,6 +24,12 @@ TestWindow::TestWindow(QWidget* parent) : QMainWindow(parent) {
     layout->addLayout(testLayout);
     connect(runTestsButton, &QPushButton::clicked, this, &TestWindow::runTests);
 
+    progressBar = new QProgressBar(this);
+    progressBar->setRange(0, 16);
+    progressBar->setValue(0);
+    progressBar->setTextVisible(true);
+    layout->addWidget(progressBar);
+
     auto* separator = new QFrame(this);
     separator->setFrameShape(QFrame::HLine);
     separator->setFrameShadow(QFrame::Sunken);
@@ -76,6 +82,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(1);
 
     if (quickSortAscAgeTest() == 0) {
         testStatusLabel->setText("Тест 2 успешно пройден.");
@@ -84,6 +91,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(2);
 
     if (heapSortDescAgeTest() == 0) {
         testStatusLabel->setText("Тест 3 успешно пройден.");
@@ -92,6 +100,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(3);
 
     if (quickSortDescAgeTest() == 0) {
         testStatusLabel->setText("Тест 4 успешно пройден.");
@@ -100,6 +109,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(4);
 
     if (heapSortAscWeightTest() == 0) {
         testStatusLabel->setText("Тест 5 успешно пройден.");
@@ -108,6 +118,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(5);
 
     if (quickSortAscWeightTest() == 0) {
         testStatusLabel->setText("Тест 6 успешно пройден.");
@@ -116,6 +127,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(6);
 
     if (heapSortDescWeightTest() == 0) {
         testStatusLabel->setText("Тест 7 успешно пройден.");
@@ -124,6 +136,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(7);
 
     if (quickSortDescWeightTest() == 0) {
         testStatusLabel->setText("Тест 8 успешно пройден.");
@@ -132,6 +145,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(8);
 
     if (heapSortAscHeightTest() == 0) {
         testStatusLabel->setText("Тест 9 успешно пройден.");
@@ -140,6 +154,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(9);
 
     if (quickSortAscHeightTest() == 0) {
         testStatusLabel->setText("Тест 10 успешно пройден.");
@@ -148,6 +163,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(10);
 
     if (heapSortDescHeightTest() == 0) {
         testStatusLabel->setText("Тест 11 успешно пройден.");
@@ -156,6 +172,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(11);
 
     if (quickSortDescHeightTest() == 0) {
         testStatusLabel->setText("Тест 12 успешно пройден.");
@@ -164,6 +181,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(12);
 
     if (heapSortAscSalaryTest() == 0) {
         testStatusLabel->setText("Тест 13 успешно пройден.");
@@ -172,6 +190,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(13);
 
     if (quickSortAscSalaryTest() == 0) {
         testStatusLabel->setText("Тест 14 успешно пройден.");
@@ -180,6 +199,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(14);
 
     if (heapSortDescSalaryTest() == 0) {
         testStatusLabel->setText("Тест 15 успешно пройден.");
@@ -188,6 +208,7 @@ void TestWindow::runTests() {
         return;
     }
     QCoreApplication::processEvents();
+    progressBar->setValue(15);
 
     if (quickSortDescSalaryTest() == 0) {
         testStatusLabel->setText("Тест 16 успешно пройден.");
@@ -195,6 +216,7 @@ void TestWindow::runTests() {
         testStatusLabel->setText("Тест 16 провален.");
         return;
     }
+    progressBar->setValue(16);
 
     testStatusLabel->setText("Все тесты успешно завершены!");
 }
