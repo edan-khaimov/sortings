@@ -95,14 +95,14 @@ void SortWindow::startSorting() const {
     QString sortOrder = sortOrderComboBox->currentText();
     QString inputFilePath = filePathLineEdit->text();
 
+    progressBar->setValue(0);
     if (inputFilePath.isEmpty()) {
         resultLabel->setText("Ошибка: Не выбран файл для сортировки.");
         return;
     }
 
     statusLabel->setText("Чтение файла...");
-    progressBar->setValue(1);
-    QCoreApplication::processEvents(); // Обновляем интерфейс
+    QCoreApplication::processEvents();
     QElapsedTimer timer;
     timer.start();
 
@@ -148,10 +148,10 @@ void SortWindow::startSorting() const {
         a.Append(person);
     }
     inputFile.close();
+    progressBar->setValue(1);
     qint64 readElapsedTime = timer.elapsed();
 
     statusLabel->setText("Сортировка...");
-    progressBar->setValue(2);
     QCoreApplication::processEvents();
 
     timer.start();
@@ -211,9 +211,9 @@ void SortWindow::startSorting() const {
         }
     }
     qint64 sortElapsedTime = timer.elapsed();
+    progressBar->setValue(2);
 
     statusLabel->setText("Запись в файл...");
-    progressBar->setValue(3);
     QCoreApplication::processEvents();
     timer.start();
     QString outputFilePath = inputFilePath.chopped(4) + "_sorted.csv";
@@ -231,6 +231,7 @@ void SortWindow::startSorting() const {
                    << "," << a[i].getPassportNumber() << "," << a[i].getSalary() << '\n';
     }
     qint64 writeElapsedTime = timer.elapsed();
+    progressBar->setValue(3);
 
     resultLabel->setText(QString("Сортировка завершена!\n"
                                  "Входной файл: %1\nВыходной файл: %2\nВремя чтения: %3 мс\nВремя сортировки: %4 "
