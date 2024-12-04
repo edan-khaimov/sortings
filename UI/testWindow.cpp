@@ -1,10 +1,7 @@
 #include "TestWindow.h"
 #include <QCoreApplication>
-#include <QElapsedTimer>
-#include <QFileDialog>
-#include <QHBoxLayout>
-#include <QThread>
 #include <QVBoxLayout>
+#include <functional>
 #include "../tests/heapSortTest.h"
 #include "../tests/quickSortTest.h"
 
@@ -15,14 +12,13 @@ TestWindow::TestWindow(QWidget* parent) : QMainWindow(parent) {
     auto* centralWidget = new QWidget(this);
     auto* layout = new QVBoxLayout(centralWidget);
 
-    auto* testLayout = new QVBoxLayout();
     runTestsButton = new QPushButton("Запустить тесты", this);
-    testLayout->addWidget(runTestsButton);
-    testStatusLabel = new QLabel("Тесты еще не запущены.", this);
-    testStatusLabel->setWordWrap(true);
-    testLayout->addWidget(testStatusLabel);
-    layout->addLayout(testLayout);
-    connect(runTestsButton, &QPushButton::clicked, this, &TestWindow::runTests);
+    layout->addWidget(runTestsButton);
+
+    testLog = new QTextEdit(this);
+    testLog->setReadOnly(true);
+    testLog->setText("Тесты еще не запущены.\n");
+    layout->addWidget(testLog);
 
     progressBar = new QProgressBar(this);
     progressBar->setRange(0, 16);
@@ -30,220 +26,58 @@ TestWindow::TestWindow(QWidget* parent) : QMainWindow(parent) {
     progressBar->setTextVisible(true);
     layout->addWidget(progressBar);
 
-    auto* separator = new QFrame(this);
-    separator->setFrameShape(QFrame::HLine);
-    separator->setFrameShadow(QFrame::Sunken);
-    layout->addWidget(separator);
-
-    auto* sortParameterLayout = new QVBoxLayout();
-    sortParameterLayout->addWidget(new QLabel("Выберите параметр сортировки:", this));
-    sortParameterComboBox = new QComboBox(this);
-    sortParameterComboBox->addItems({"Возраст", "Вес", "Рост", "Зарплата"});
-    sortParameterLayout->addWidget(sortParameterComboBox);
-    layout->addLayout(sortParameterLayout);
-
-    auto* sortOrderLayout = new QVBoxLayout();
-    sortOrderLayout->addWidget(new QLabel("Выберите порядок сортировки:", this));
-    sortOrderComboBox = new QComboBox(this);
-    sortOrderComboBox->addItems({"По возрастанию", "По убыванию"});
-    sortOrderLayout->addWidget(sortOrderComboBox);
-    layout->addLayout(sortOrderLayout);
-
-    auto* fileLayout = new QHBoxLayout();
-    fileLayout->addWidget(new QLabel("Выберите CSV файл:", this));
-    filePathLineEdit = new QLineEdit(this);
-    filePathLineEdit->setReadOnly(true);
-    fileLayout->addWidget(filePathLineEdit);
-    auto* fileButton = new QPushButton("Выбрать файл", this);
-    fileLayout->addWidget(fileButton);
-    layout->addLayout(fileLayout);
-    connect(fileButton, &QPushButton::clicked, this, &TestWindow::selectFile);
-
-    checkSortingButton = new QPushButton("Проверить, отсортирован ли файл", this);
-    layout->addWidget(checkSortingButton);
-    connect(checkSortingButton, &QPushButton::clicked, this, &TestWindow::checkIfFileIsSorted);
-
-    resultLabel = new QLabel("Результат будет отображён здесь.", this);
-    resultLabel->setWordWrap(true);
-    layout->addWidget(resultLabel);
-
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
+
+    connect(runTestsButton, &QPushButton::clicked, this, &TestWindow::runTests);
 }
 
 void TestWindow::runTests() {
-    testStatusLabel->setText("Запуск тестов...");
-    QCoreApplication::processEvents();
+    testLog->clear();
+    progressBar->setValue(0);
 
-    if (heapSortAscAgeTest() == 0) {
-        testStatusLabel->setText("Тест 1 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 1 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(1);
+    struct Test {
+        QString name;
+        std::function<int()> func;
+    };
 
-    if (quickSortAscAgeTest() == 0) {
-        testStatusLabel->setText("Тест 2 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 2 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(2);
+    const Test tests[] = {
+            {"Тест 1 (Heap Sort Asc Age)", []() { return heapSortAscAgeTest(); }},
+            {"Тест 2 (Quick Sort Asc Age)", []() { return quickSortAscAgeTest(); }},
+            {"Тест 3 (Heap Sort Desc Age)", []() { return heapSortDescAgeTest(); }},
+            {"Тест 4 (Quick Sort Desc Age)", []() { return quickSortDescAgeTest(); }},
+            {"Тест 5 (Heap Sort Asc Weight)", []() { return heapSortAscWeightTest(); }},
+            {"Тест 6 (Quick Sort Asc Weight)", []() { return quickSortAscWeightTest(); }},
+            {"Тест 7 (Heap Sort Desc Weight)", []() { return heapSortDescWeightTest(); }},
+            {"Тест 8 (Quick Sort Desc Weight)", []() { return quickSortDescWeightTest(); }},
+            {"Тест 9 (Heap Sort Asc Height)", []() { return heapSortAscHeightTest(); }},
+            {"Тест 10 (Quick Sort Asc Height)", []() { return quickSortAscHeightTest(); }},
+            {"Тест 11 (Heap Sort Desc Height)", []() { return heapSortDescHeightTest(); }},
+            {"Тест 12 (Quick Sort Desc Height)", []() { return quickSortDescHeightTest(); }},
+            {"Тест 13 (Heap Sort Asc Salary)", []() { return heapSortAscSalaryTest(); }},
+            {"Тест 14 (Quick Sort Asc Salary)", []() { return quickSortAscSalaryTest(); }},
+            {"Тест 15 (Heap Sort Desc Salary)", []() { return heapSortDescSalaryTest(); }},
+            {"Тест 16 (Quick Sort Desc Salary)", []() { return quickSortDescSalaryTest(); }},
+    };
 
-    if (heapSortDescAgeTest() == 0) {
-        testStatusLabel->setText("Тест 3 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 3 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(3);
+    constexpr int totalTests = std::size(tests);
 
-    if (quickSortDescAgeTest() == 0) {
-        testStatusLabel->setText("Тест 4 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 4 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(4);
+    for (int i = 0; i < totalTests; ++i) {
+        const bool success = (tests[i].func() == 0);
 
-    if (heapSortAscWeightTest() == 0) {
-        testStatusLabel->setText("Тест 5 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 5 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(5);
+        QString result = success ? "УСПЕШНО" : "НЕУСПЕШНО";
+        testLog->append(QString("%1: %2").arg(tests[i].name).arg(result));
 
-    if (quickSortAscWeightTest() == 0) {
-        testStatusLabel->setText("Тест 6 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 6 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(6);
+        if (!success) {
+            testLog->append("Тестирование остановлено из-за ошибки.");
+            progressBar->setValue(i + 1);
+            return;
+        }
 
-    if (heapSortDescWeightTest() == 0) {
-        testStatusLabel->setText("Тест 7 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 7 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(7);
-
-    if (quickSortDescWeightTest() == 0) {
-        testStatusLabel->setText("Тест 8 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 8 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(8);
-
-    if (heapSortAscHeightTest() == 0) {
-        testStatusLabel->setText("Тест 9 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 9 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(9);
-
-    if (quickSortAscHeightTest() == 0) {
-        testStatusLabel->setText("Тест 10 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 10 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(10);
-
-    if (heapSortDescHeightTest() == 0) {
-        testStatusLabel->setText("Тест 11 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 11 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(11);
-
-    if (quickSortDescHeightTest() == 0) {
-        testStatusLabel->setText("Тест 12 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 12 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(12);
-
-    if (heapSortAscSalaryTest() == 0) {
-        testStatusLabel->setText("Тест 13 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 13 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(13);
-
-    if (quickSortAscSalaryTest() == 0) {
-        testStatusLabel->setText("Тест 14 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 14 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(14);
-
-    if (heapSortDescSalaryTest() == 0) {
-        testStatusLabel->setText("Тест 15 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 15 провален.");
-        return;
-    }
-    QCoreApplication::processEvents();
-    progressBar->setValue(15);
-
-    if (quickSortDescSalaryTest() == 0) {
-        testStatusLabel->setText("Тест 16 успешно пройден.");
-    } else {
-        testStatusLabel->setText("Тест 16 провален.");
-        return;
-    }
-    progressBar->setValue(16);
-
-    testStatusLabel->setText("Все тесты успешно завершены!");
-}
-
-void TestWindow::selectFile() {
-    QString filePath = QFileDialog::getOpenFileName(this, "Выберите CSV файл", "", "CSV файлы (*.csv)");
-    if (!filePath.isEmpty()) {
-        filePathLineEdit->setText(filePath);
-    }
-}
-
-void TestWindow::checkIfFileIsSorted() {
-    QString sortParameter = sortParameterComboBox->currentText();
-    QString sortOrder = sortOrderComboBox->currentText();
-    QString filePath = filePathLineEdit->text();
-
-    if (filePath.isEmpty()) {
-        resultLabel->setText("Ошибка: Не выбран файл для проверки.");
-        return;
+        progressBar->setValue(i + 1);
+        QCoreApplication::processEvents();
     }
 
-    // Вызов вашей функции проверки отсортированности
-    bool isSorted = true; // Ваша функция: checkIfSorted(filePath, sortParameter, sortOrder);
-
-    if (isSorted) {
-        resultLabel->setText("Файл отсортирован корректно.");
-    } else {
-        resultLabel->setText("Файл не отсортирован.");
-    }
+    testLog->append("\nВсе тесты успешно завершены!");
+    progressBar->setValue(totalTests);
 }

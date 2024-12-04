@@ -23,7 +23,7 @@ void applyStyleSheet(QApplication &app) {
             font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
-            border-radius: 0; /* Оставляем углы острыми */
+            border-radius: 0;
         }
 
         QPushButton:hover {
@@ -55,17 +55,9 @@ void applyStyleSheet(QApplication &app) {
         QComboBox QAbstractItemView {
             background-color: #1E1E1E;
             color: #FFFFFF;
-            selection-background-color: #1DB954; /* Цвет выделения */
-            selection-color: #FFFFFF; /* Цвет текста при выделении */
+            selection-background-color: #1DB954;
+            selection-color: #FFFFFF;
             border: 1px solid #1DB954;
-        }
-
-        QComboBox QAbstractItemView::item {
-            outline: none; /* Убираем фиолетовый контур */
-            border: none; /* Убираем границу */
-            padding: 0; /* Убираем внутренние отступы */
-            margin: 0; /* Убираем внешние отступы */
-            background-color: transparent; /* Сброс фона, если нужно */
         }
 
         QLineEdit {
@@ -93,9 +85,33 @@ void applyStyleSheet(QApplication &app) {
             border: none;
             margin: 10px 0;
         }
+
+        QTextEdit {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+            border: 1px solid #1DB954;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        QTextEdit QScrollBar:vertical {
+            border: none;
+            background: #121212;
+            width: 10px;
+        }
+
+        QTextEdit QScrollBar::handle:vertical {
+            background: #1DB954;
+            border-radius: 5px;
+        }
+
+        QTextEdit QScrollBar::add-line:vertical, QTextEdit QScrollBar::sub-line:vertical {
+            height: 0px;
+        }
     )";
     app.setStyleSheet(styleSheet);
 }
+
 
 
 

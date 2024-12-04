@@ -1,36 +1,26 @@
 #ifndef TESTWINDOW_H
 #define TESTWINDOW_H
 
-#include <QMainWindow>
-#include <QComboBox>
-#include <QLineEdit>
+#include <QTextEdit>
 #include <QLabel>
-#include <QPushButton>
+#include <QMainWindow>
 #include <QProgressBar>
+#include <QPushButton>
 
 class TestWindow : public QMainWindow {
     Q_OBJECT
 
 public:
-    explicit TestWindow(QWidget *parent = nullptr);
+    explicit TestWindow(QWidget* parent = nullptr);
 
-    private slots:
-        void runTests();
-    void selectFile();
-    void checkIfFileIsSorted();
+private slots:
+    void runTests();
 
 private:
-    QPushButton *runTestsButton;
-    QLabel *testStatusLabel;
-
-    QComboBox *sortParameterComboBox;
-    QComboBox *sortOrderComboBox;
-    QLineEdit *filePathLineEdit;
-
-    QLabel *resultLabel;
-
-    QPushButton *checkSortingButton;
-
+    QPushButton* runTestsButton;
+    QLabel* testStatusLabel;
+    QLabel* resultLabel;
+    QTextEdit* testLog;
     QProgressBar* progressBar;
 };
 
