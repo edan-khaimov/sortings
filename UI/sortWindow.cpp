@@ -65,13 +65,11 @@ SortWindow::SortWindow(QWidget* parent) : QMainWindow(parent) {
     layout->addLayout(startButtonLayout);
     connect(startButton, &QPushButton::clicked, this, &SortWindow::startSorting);
 
-    // Прогресс-бар
     progressBar = new QProgressBar(this);
-    progressBar->setRange(0, 3); // Чтение, сортировка, запись (3 этапа)
+    progressBar->setRange(0, 3);
     progressBar->setValue(0);
     layout->addWidget(progressBar);
 
-    // Статус выполнения
     statusLabel = new QLabel("Ожидание действий пользователя...", this);
     statusLabel->setWordWrap(true);
     layout->addWidget(statusLabel);
